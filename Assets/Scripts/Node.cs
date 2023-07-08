@@ -19,7 +19,7 @@ public class Node : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.white;
-        Gizmos.DrawSphere(transform.position, 0.3f);
+        Gizmos.DrawSphere(transform.position, 5f);
 
         foreach (var neighbor in neighbors)
         {

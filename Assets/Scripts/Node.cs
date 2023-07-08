@@ -7,7 +7,7 @@ using UnityEngine;
 public class Node : MonoBehaviour
 {
     public List<Node> neighbors;
-    public NodeConnection[] connections = new NodeConnection[Enum.GetNames(typeof(Enums.Directions)).Length];
+    public Edge[] connections = new Edge[Enum.GetNames(typeof(Enums.Directions)).Length];
 
     public List<Node> FindPathTo(Node destination)
     {

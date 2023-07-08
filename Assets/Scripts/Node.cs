@@ -89,15 +89,16 @@ public class Node : MonoBehaviour
         }
 
         var destinationWaypoint = nodesToWaypoints[destination];
-        return destinationWaypoint.way.ToList();
+        return destinationWaypoint.way.Concat(new[] {destination}).ToList();
     }
 
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.white;
+        Gizmos.color = new Color(1, 1, 1, 0.5f);
         Gizmos.DrawSphere(transform.position, 0.3f);
 
+        Gizmos.color = new Color(1, 1, 1, 0.25f);
         foreach (var neighbor in neighbors)
         {
             Gizmos.DrawLine(transform.position, neighbor.transform.position);
@@ -111,7 +112,9 @@ public class Node : MonoBehaviour
     }
     public override string ToString()
     {
-        return $"{transform.position.x.ToString()}" + " , " + $"{transform.position.y.ToString()}";
+        var x = transform.position.x;
+        var y = transform.position.y;
+        return x + " , " + y + " (" + name + ")";
     }
 }
 

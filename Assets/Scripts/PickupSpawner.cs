@@ -13,6 +13,7 @@ public class PickupSpawner : MonoBehaviour
 
     private void Awake()
     {
+        availablePickupPoints = new List<Node>();
         availablePickupPoints.AddRange(PickupPoints);
         recentlyUsedPickupPoints = new List<Node>();
     }

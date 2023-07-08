@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DefaultNamespace;
@@ -6,7 +7,7 @@ using UnityEngine;
 public class Node : MonoBehaviour
 {
     public List<Node> neighbors;
-    public NodeConnection[] connections = new NodeConnection[8];
+    public NodeConnection[] connections = new NodeConnection[Enum.GetNames(typeof(Enums.Directions)).Length];
 
     public List<Node> FindPathTo(Node destination)
     {

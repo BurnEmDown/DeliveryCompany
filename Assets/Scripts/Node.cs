@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using DefaultNamespace;
 using UnityEngine;
 
 public class Node : MonoBehaviour
 {
     public List<Node> neighbors;
-
+    public NodeConnection[] connections = new NodeConnection[8];
 
     public List<Node> FindPathTo(Node destination)
     {

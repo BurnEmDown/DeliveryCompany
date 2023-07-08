@@ -11,6 +11,9 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private Material[] colorMaterials; // 0 is red, 1 is blue, 2 is green
 
+    [SerializeField] private GameObject pickupMarkerPrefab;
+    [SerializeField] private GameObject dropoffMarkerPrefab;
+    
     [SerializeField] private int numPickups = 3;
 
     private List<(Node, Node)> PickupDropoffNodesList;
@@ -47,18 +50,14 @@ public class GameManager : MonoBehaviour
         int materialIndex = 0;
         foreach (var tuple in PickupDropoffNodesList)
         {
-            //Gizmos.DrawSphere(tuple.Item1.transform.position, 1f);
-            //Gizmos.DrawCube(tuple.Item2.transform.position, Vector3.one);
+            GameObject obj1 = Instantiate(pickupMarkerPrefab, tuple.Item1.transform.position + Vector3.back, Quaternion.identity);
+            obj1.GetComponent<SpriteRenderer>().material =
+                colorMaterials[materialIndex];
 
-            GameObject obj1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            obj1.transform.position = tuple.Item1.transform.position;
-
-            GameObject obj2 = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-            obj2.transform.position = tuple.Item2.transform.position;
+            GameObject obj2 = Instantiate(dropoffMarkerPrefab, tuple.Item2.transform.position + Vector3.back, Quaternion.identity);
+            obj2.GetComponent<SpriteRenderer>().material =
+                colorMaterials[materialIndex];
             
-            obj1.GetComponent<MeshRenderer>().material = colorMaterials[materialIndex];
-            obj2.GetComponent<MeshRenderer>().material = colorMaterials[materialIndex];
-
             materialIndex++;
         }
     }

@@ -209,6 +209,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   neighbors:
   - {fileID: 152663173}
+  - {fileID: 1887186126}
 --- !u!4 &28783525
 Transform:
   m_ObjectHideFlags: 0
@@ -556,6 +557,7 @@ MonoBehaviour:
   neighbors:
   - {fileID: 675505707}
   - {fileID: 207641261}
+  - {fileID: 1753560745}
 --- !u!1 &152663172
 GameObject:
   m_ObjectHideFlags: 0
@@ -939,6 +941,7 @@ MonoBehaviour:
   - {fileID: 1670037408}
   - {fileID: 1168347089}
   - {fileID: 147132693}
+  - {fileID: 459780442}
 --- !u!1 &211255799
 GameObject:
   m_ObjectHideFlags: 0
@@ -2060,6 +2063,7 @@ MonoBehaviour:
   neighbors:
   - {fileID: 459780442}
   - {fileID: 1014952291}
+  - {fileID: 675505707}
 --- !u!4 &998930097
 Transform:
   m_ObjectHideFlags: 0
@@ -2292,7 +2296,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentNode: {fileID: 1738356290}
   currentDestinationNode: {fileID: 2092094086}
-  moveSpeed: 1
+  moveSpeed: 3
   isMoving: 0
 --- !u!224 &1231225273
 RectTransform:
@@ -2708,6 +2712,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   neighbors:
   - {fileID: 667714822}
+  - {fileID: 1670037408}
 --- !u!4 &1662661137
 Transform:
   m_ObjectHideFlags: 0
@@ -2818,6 +2823,7 @@ MonoBehaviour:
   neighbors:
   - {fileID: 1662661136}
   - {fileID: 661426767}
+  - {fileID: 207641261}
 --- !u!1 &1686936700
 GameObject:
   m_ObjectHideFlags: 0
@@ -2981,6 +2987,7 @@ MonoBehaviour:
   neighbors:
   - {fileID: 1738356290}
   - {fileID: 1168347089}
+  - {fileID: 101990351}
 --- !u!1 &1753560744
 GameObject:
   m_ObjectHideFlags: 0

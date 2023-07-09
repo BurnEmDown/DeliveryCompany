@@ -318,6 +318,11 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public void Exit()
+    {
+        Application.Quit();
+    }
+
     public void OnResetButtonClick()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);

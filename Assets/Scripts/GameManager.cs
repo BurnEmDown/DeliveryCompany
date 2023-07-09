@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviour
             pickupMarker.node = tuple.Item1;
             dropoffMarker.node = tuple.Item2;
 
-            pickupMarker.colorIndex = materialIndex;
+            //pickupMarker.colorIndex = materialIndex;
             //dropoffMarker.colorIndex = materialIndex;
 
             pickupMarker.isPickup = true;
@@ -131,7 +131,7 @@ public class GameManager : MonoBehaviour
             materialIndex++;
         }
 
-        RedrawAvailabilityColors();
+        //RedrawAvailabilityColors();
     }
 
     private void DisableGoButton()
@@ -194,7 +194,7 @@ public class GameManager : MonoBehaviour
             selectedMarkers.Add(marker);
 
         RedrawNumbersOnMarkers();
-        RedrawAvailabilityColors();
+        //RedrawAvailabilityColors();
 
         CalculateAndAddPathToMarker(marker);
         EnableResetRouteButton();
@@ -272,7 +272,7 @@ public class GameManager : MonoBehaviour
         if(selectedMarkers != null)
             selectedMarkers.Clear();
         RedrawNumbersOnMarkers();
-        RedrawAvailabilityColors();
+        //RedrawAvailabilityColors();
         DisableResetRouteButton();
         DisableGoButton();
     }

@@ -114,13 +114,19 @@ public class GameManager : MonoBehaviour
             dropoffMarker.node = tuple.Item2;
 
             pickupMarker.colorIndex = materialIndex;
-            dropoffMarker.colorIndex = materialIndex;
+            //dropoffMarker.colorIndex = materialIndex;
 
             pickupMarker.isPickup = true;
             dropoffMarker.isPickup = false;
 
-            GameObject foodIcon = Instantiate(foodIconContainer.GetRandomAvailableFoodIcon(), pickupObject.transform);
-            foodIcon.transform.localPosition = Vector3.back;
+            GameObject foodIcon = foodIconContainer.GetRandomAvailableFoodIcon();
+
+            GameObject foodIconPickup = Instantiate(foodIcon, pickupObject.transform);
+            foodIconPickup.transform.localPosition = Vector3.back;
+            
+            GameObject foodIconDropoff = Instantiate(foodIcon, dropoffObject.transform);
+            foodIconDropoff.transform.localPosition = Vector3.back + (Vector3.up * 0.8f);
+            foodIconDropoff.transform.localScale *= 0.8f;
 
             materialIndex++;
         }

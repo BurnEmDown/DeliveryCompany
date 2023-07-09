@@ -126,7 +126,7 @@ public class GameManager : MonoBehaviour
             foodIconPickup.transform.localScale *= 3f;
             
             GameObject foodIconDropoff = Instantiate(foodIcon, dropoffObject.transform);
-            foodIconDropoff.transform.localPosition = Vector3.back + (Vector3.up * 0.8f);
+            foodIconDropoff.transform.localPosition = Vector3.back + (Vector3.up * 0.65f);
             foodIconDropoff.transform.localScale *= 0.8f;
 
             materialIndex++;

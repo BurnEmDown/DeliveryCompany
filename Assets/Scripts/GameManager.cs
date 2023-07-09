@@ -43,8 +43,8 @@ public class GameManager : MonoBehaviour
     private List<(Node, Node)> PickupDropoffNodesList;
 
 
-    public static List<Marker> selectedMarkers;
-    public static List<Path> selectedPaths;
+    public List<Marker> selectedMarkers;
+    public List<Path> selectedPaths;
 
     // needed for create primitive
     private MeshFilter meshFilter;
@@ -119,15 +119,13 @@ public class GameManager : MonoBehaviour
             pickupMarker.isPickup = true;
             dropoffMarker.isPickup = false;
 
-
             GameObject foodIcon = Instantiate(foodIconContainer.GetRandomAvailableFoodIcon(), pickupObject.transform);
             foodIcon.transform.localPosition = Vector3.back;
-            foodIcon.transform.rotation = Quaternion.identity;
-            
+
             materialIndex++;
         }
 
-        RedrawAvaliabilityColors();
+        RedrawAvailabilityColors();
     }
 
     private void DisableGoButton()
@@ -190,7 +188,7 @@ public class GameManager : MonoBehaviour
             selectedMarkers.Add(marker);
 
         RedrawNumbersOnMarkers();
-        RedrawAvaliabilityColors();
+        RedrawAvailabilityColors();
 
         CalculateAndAddPathToMarker(marker);
         EnableResetRouteButton();
@@ -213,27 +211,25 @@ public class GameManager : MonoBehaviour
             marker.label.text = (i + 1).ToString();
         }
     }
-    public static void RedrawAvaliabilityColors()
+    public void RedrawAvailabilityColors()
     {
-        var gameManager = FindObjectOfType<GameManager>();
-
         var allMarkers = FindObjectsOfType<Marker>();
 
         foreach (var marker in allMarkers)
         {
-            var color = gameManager.colors[marker.colorIndex];
+            var color = colors[marker.colorIndex];
             var isSelected = selectedMarkers != null && selectedMarkers.Contains(marker);
             if (isSelected)
             {
-                var selectedColorStrength = gameManager.disabledButtonColor.a;
-                var opaqueSelectedColor = gameManager.selectedButtonColor;
+                var selectedColorStrength = disabledButtonColor.a;
+                var opaqueSelectedColor = selectedButtonColor;
                 opaqueSelectedColor.a = 1;
                 color = Color.Lerp(color, opaqueSelectedColor, selectedColorStrength);
             }
             if (!marker.IsValidDestination())
             {
-                var disableColorStrength = gameManager.disabledButtonColor.a;
-                var opaqueDisabledColor = gameManager.disabledButtonColor;
+                var disableColorStrength = disabledButtonColor.a;
+                var opaqueDisabledColor = disabledButtonColor;
                 opaqueDisabledColor.a = 1;
                 color = Color.Lerp(color, opaqueDisabledColor, disableColorStrength);
             }
@@ -265,9 +261,12 @@ public class GameManager : MonoBehaviour
 
     public void ResetRoute()
     {
-        selectedMarkers.Clear();
-        selectedPaths.Clear();
+        if(selectedPaths != null)
+            selectedPaths.Clear();
+        if(selectedMarkers != null)
+            selectedMarkers.Clear();
         RedrawNumbersOnMarkers();
+        RedrawAvailabilityColors();
         DisableResetRouteButton();
         DisableGoButton();
     }

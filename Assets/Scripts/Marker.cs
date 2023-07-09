@@ -25,7 +25,7 @@ public class Marker : MonoBehaviour
 
     public bool IsValidDestination()
     {
-        var selectedMarkers = GameManager.selectedMarkers;
+        var selectedMarkers = GameManager.Instance.selectedMarkers;
         var hasColorInPrevPickups = selectedMarkers != null && selectedMarkers.Any(marker => marker.isPickup && marker.colorIndex == this.colorIndex);
         var isValidDestination = isPickup || hasColorInPrevPickups;
 

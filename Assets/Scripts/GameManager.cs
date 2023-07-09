@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
             GameObject dropoffObject = Instantiate(dropoffMarkerPrefab, tuple.Item2.transform.position + Vector3.back, Quaternion.identity);
             dropoffObject.GetComponent<SpriteRenderer>().material = colorMaterials[materialIndex];
 
-            GameObject foodIcon = Instantiate(foodIconContainer.GetRandomAvailableFoodIcon(), obj1.transform);
+            GameObject foodIcon = Instantiate(foodIconContainer.GetRandomAvailableFoodIcon(), pickupObject.transform);
             
             foodIcon.transform.localPosition = Vector3.back;
             foodIcon.transform.rotation = Quaternion.identity;

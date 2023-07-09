@@ -110,6 +110,12 @@ public class GameManager : MonoBehaviour
 
             pickupMarker.node = tuple.Item1;
             dropoffMarker.node = tuple.Item2;
+
+            pickupMarker.colorIndex = materialIndex;
+            dropoffMarker.colorIndex = materialIndex;
+
+            pickupMarker.isPickup = true;
+            dropoffMarker.isPickup = false;
         }
     }
 
@@ -182,10 +188,10 @@ public class GameManager : MonoBehaviour
 
     public static void CalculateAndAddPathToMarker(Marker marker)
     {
-        if (!selectedMarkers.Any())
+        if (!selectedMarkers.Any(m => m != marker))
             return;
 
-        var sourceNode = selectedMarkers.Last().node;
+        var sourceNode = selectedMarkers.Last(m => m != marker).node;
         var destinationNode = marker.node;
 
         var addedPathNodes = Node.FindPath(sourceNode, destinationNode);
@@ -194,6 +200,9 @@ public class GameManager : MonoBehaviour
             destination = marker,
             path = addedPathNodes
         };
+
+        if (selectedPaths == null)
+            selectedPaths = new List<Path>();
 
         selectedPaths.Add(addedPath);
     }

@@ -1,11 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Driver : MonoBehaviour
 {
-    [SerializeField] private Node currentNode;
-    [SerializeField] private Node currentDestinationNode;
+    public static Driver Instance;
+
+
+    [SerializeField] private Node startNode;
     
     [SerializeField] private float moveSpeed = 0.002f;
 
@@ -13,20 +16,19 @@ public class Driver : MonoBehaviour
 
     private IEnumerator driveToDestinationNodeEnumerator;
 
-    public Node GetCurrentNode()
-    {
-        return currentNode;
-    }
+    private Marker startMarker;
+    public Marker StartMarker => startMarker;
 
     private void Start()
     {
-        transform.position = currentNode.transform.position;
-        driveToDestinationNodeEnumerator = CreateDriveToDestinationNodeEnumerator();
-    }
+        Instance = this;
 
-    public void SetDestinationNode(Node destNode)
-    {
-        currentDestinationNode = destNode;
+        transform.position = startNode.transform.position;
+        startMarker = startNode.gameObject.AddComponent<Marker>();
+        startMarker.node = startNode;
+        startMarker.matchIndex = -1;
+        startMarker.name = "Start Node";
+        driveToDestinationNodeEnumerator = CreateDriveToDestinationNodeEnumerator();
     }
 
     private void Update()
@@ -46,7 +48,7 @@ public class Driver : MonoBehaviour
         var paths = GameManager.Instance.selectedPaths;
         var pathIndex = 0;
 
-        while (pathIndex < paths.Count)
+        while (true)
         {
             var path = paths[pathIndex];
             var nodes = path.path;
@@ -81,11 +83,10 @@ public class Driver : MonoBehaviour
                 GameManager.Instance.CreatePickupsAndDropoffs(1);
             }
             path.destination.gameObject.SetActive(false);
-            yield return null;
-        }
 
-        isMoving = false;
-        yield return null;
+            do yield return null;
+            while (pathIndex >= paths.Count);
+        }
     }
 
 }

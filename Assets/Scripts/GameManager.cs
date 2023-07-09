@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int timerSeconds = 72;
     private int score = 0;
 
-    public List<Marker> selectedMarkers;
+    public List<Marker> SelectedMarkers => selectedMarkers;
     public List<Path> selectedPaths;
 
     private bool isPaused;
@@ -58,6 +58,7 @@ public class GameManager : MonoBehaviour
     private MeshRenderer meshRenderer;
     private BoxCollider boxCollider;
     private SphereCollider sphereCollider;
+    private List<Marker> selectedMarkers;
 
     private void Awake()
     {
@@ -193,11 +194,17 @@ public class GameManager : MonoBehaviour
 
     public void AddMarkerToSelection(Marker marker)
     {
-        if (selectedMarkers == null)
+        if (SelectedMarkers == null)
+        {
             selectedMarkers = new List<Marker>();
+            selectedMarkers.Add(Driver.Instance.StartMarker);
+        }
 
-        if (!selectedMarkers.Contains(marker))
-            selectedMarkers.Add(marker);
+        if (selectedMarkers.Contains(marker))
+            return;
+
+
+        selectedMarkers.Add(marker);
 
         RedrawNumbersOnMarkers();
         //RedrawAvailabilityColors();
@@ -213,14 +220,16 @@ public class GameManager : MonoBehaviour
 
     public void RedrawNumbersOnMarkers()
     {
-        var allMarkers = FindObjectsOfType<Marker>();
+        var allMarkers = FindObjectsOfType<Marker>().Where(m => m.label != null);
         foreach (var marker in allMarkers)
             marker.label.text = "";
 
         for (int i = 0; i < selectedMarkers.Count; i++)
         {
             var marker = selectedMarkers[i];
-            marker.label.text = (i + 1).ToString();
+            if (marker.label == null) continue;
+
+            marker.label.text = i.ToString();
         }
     }
 
@@ -231,7 +240,7 @@ public class GameManager : MonoBehaviour
         foreach (var marker in allMarkers)
         {
             var color = colors[marker.matchIndex];
-            var isSelected = selectedMarkers != null && selectedMarkers.Contains(marker);
+            var isSelected = SelectedMarkers != null && SelectedMarkers.Contains(marker);
             if (isSelected)
             {
                 var selectedColorStrength = disabledButtonColor.a;
@@ -310,6 +319,11 @@ public class GameManager : MonoBehaviour
                 EnableGoButton();
         }
 
+    }
+
+    public void Exit()
+    {
+        Application.Quit();
     }
 
     public void OnResetButtonClick()

@@ -25,11 +25,22 @@ public class PickupSpawner : MonoBehaviour
         for (int i = 0; i < num; i++)
         {
             index = Random.Range(0, availablePickupPoints.Count);
-            currentPickupPointsList.Add(availablePickupPoints[index]);
-            recentlyUsedPickupPoints.Add(availablePickupPoints[index]);
+            Node currentNode = availablePickupPoints[index];
+            currentPickupPointsList.Add(currentNode);
             availablePickupPoints.RemoveAt(index);
+            if (availablePickupPoints.Count <= 3)
+            {
+                RefreshList();
+            }
         }
 
+        recentlyUsedPickupPoints.AddRange(currentPickupPointsList);
         return currentPickupPointsList;
+    }
+
+    private void RefreshList()
+    {
+        availablePickupPoints.AddRange(recentlyUsedPickupPoints);
+        recentlyUsedPickupPoints.Clear();
     }
 }

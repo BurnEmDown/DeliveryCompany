@@ -20,16 +20,26 @@ namespace DefaultNamespace
         public List<Node> SpawnCurrentDropOffPoints(int num)
         {
             int index;
-            List<Node> currentPickupPointsList = new List<Node>();
+            List<Node> currentDropoffPointsList = new List<Node>();
             for (int i = 0; i < num; i++)
             {
                 index = Random.Range(0, availableDropOffPoints.Count);
-                currentPickupPointsList.Add(availableDropOffPoints[index]);
-                recentlyUsedDropOffPoints.Add(availableDropOffPoints[index]);
+                Node currentNode = availableDropOffPoints[index];
+                currentDropoffPointsList.Add(currentNode);
                 availableDropOffPoints.RemoveAt(index);
+                if (availableDropOffPoints.Count <= 3)
+                {
+                    RefreshList();
+                }
             }
-
-            return currentPickupPointsList;
+            recentlyUsedDropOffPoints.AddRange(currentDropoffPointsList);
+            return currentDropoffPointsList;
+        }
+        
+        private void RefreshList()
+        {
+            availableDropOffPoints.AddRange(recentlyUsedDropOffPoints);
+            recentlyUsedDropOffPoints.Clear();
         }
     }
 }

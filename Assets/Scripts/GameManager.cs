@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class GameManager : MonoBehaviour
         public List<Node> path;
         public Marker destination;
     }
+
+    [SerializeField] private EmojiContainer emojiContainer;
 
     [SerializeField] private Button goButton;
     [SerializeField] private Button resetRouteButton;

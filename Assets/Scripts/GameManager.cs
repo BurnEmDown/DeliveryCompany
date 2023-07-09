@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    private class Path
+    public class Path
     {
         public List<Node> path;
         public Marker destination;

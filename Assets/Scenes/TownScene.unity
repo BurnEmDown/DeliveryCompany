@@ -1035,10 +1035,12 @@ MonoBehaviour:
   foodIconContainer: {fileID: 272718597}
   timerText: {fileID: 173037529}
   scoreText: {fileID: 1298894770}
-  colorMaterials:
-  - {fileID: 2100000, guid: f53a113f43a2de145b8e15f6f5bcefc4, type: 2}
-  - {fileID: 2100000, guid: 9712bf89112e4854580c4c6048e7d8ea, type: 2}
-  - {fileID: 2100000, guid: d3112790bd72b3e4cb4d5da8927d7308, type: 2}
+  colors:
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0, b: 1, a: 1}
+  - {r: 0, g: 1, b: 0, a: 1}
+  disabledButtonColor: {r: 1, g: 1, b: 1, a: 0.65882355}
+  selectedButtonColor: {r: 0, g: 0, b: 0, a: 0.5019608}
   pickupMarkerPrefab: {fileID: 396019749623571242, guid: 45b87459cf5689341b35af5279eb9524, type: 3}
   dropoffMarkerPrefab: {fileID: 6028080882641458325, guid: cce2bdb283d96184189a0db322a06fb0, type: 3}
   numPickups: 3

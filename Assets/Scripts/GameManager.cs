@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text scoreText;
 
     [SerializeField] private Color[] colors; // 0 is red, 1 is blue, 2 is green
+    public Color disabledButtonColor;
+    public Color selectedButtonColor;
 
     [SerializeField] private GameObject pickupMarkerPrefab;
     [SerializeField] private GameObject dropoffMarkerPrefab;
@@ -92,9 +94,6 @@ public class GameManager : MonoBehaviour
             var pickupRenderer = pickupObject.GetComponent<SpriteRenderer>();
             var dropoffRenderer = dropoffObject.GetComponent<SpriteRenderer>();
 
-            pickupRenderer.color = colors[materialIndex];
-            dropoffRenderer.color = colors[materialIndex];
-
             var pickupMarker = pickupObject.GetComponent<Marker>();
             var dropoffMarker = dropoffObject.GetComponent<Marker>();
 
@@ -115,6 +114,8 @@ public class GameManager : MonoBehaviour
 
             materialIndex++;
         }
+
+        RedrawAvaliabilityColors();
     }
 
     private void DisableGoButton()
@@ -167,6 +168,7 @@ public class GameManager : MonoBehaviour
             selectedMarkers.Add(marker);
 
         RedrawNumbersOnMarkers();
+        RedrawAvaliabilityColors();
 
         CalculateAndAddPathToMarker(marker);
     }
@@ -181,6 +183,34 @@ public class GameManager : MonoBehaviour
         {
             var marker = selectedMarkers[i];
             marker.label.text = (i + 1).ToString();
+        }
+    }
+    public static void RedrawAvaliabilityColors()
+    {
+        var gameManager = FindObjectOfType<GameManager>();
+
+        var allMarkers = FindObjectsOfType<Marker>();
+
+        foreach (var marker in allMarkers)
+        {
+            var color = gameManager.colors[marker.colorIndex];
+            var isSelected = selectedMarkers != null && selectedMarkers.Contains(marker);
+            if (isSelected)
+            {
+                var selectedColorStrength = gameManager.disabledButtonColor.a;
+                var opaqueSelectedColor = gameManager.selectedButtonColor;
+                opaqueSelectedColor.a = 1;
+                color = Color.Lerp(color, opaqueSelectedColor, selectedColorStrength);
+            }
+            if (!marker.IsValidDestination())
+            {
+                var disableColorStrength = gameManager.disabledButtonColor.a;
+                var opaqueDisabledColor = gameManager.disabledButtonColor;
+                opaqueDisabledColor.a = 1;
+                color = Color.Lerp(color, opaqueDisabledColor, disableColorStrength);
+            }
+
+            marker.GetComponent<SpriteRenderer>().color = color;
         }
     }
 

@@ -95,10 +95,10 @@ public class Node : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = new Color(1, 1, 1, 0.5f);
+        Gizmos.color = new Color(1, 1, 1 , 0.5f);
         Gizmos.DrawSphere(transform.position, 0.3f);
 
-        Gizmos.color = new Color(1, 1, 1, 0.25f);
+        Gizmos.color = new Color(0, 0, 0, 0.5f);
         foreach (var neighbor in neighbors)
         {
             Gizmos.DrawLine(transform.position, neighbor.transform.position);

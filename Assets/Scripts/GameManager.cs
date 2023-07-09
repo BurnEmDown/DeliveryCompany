@@ -8,6 +8,12 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    private class Path
+    {
+        public List<Node> path;
+        public Marker destination;
+    }
+
     [SerializeField] private Button goButton;
     private TMP_Text goButtonText;
     private Image goButtonImage;
@@ -28,7 +34,11 @@ public class GameManager : MonoBehaviour
     private int score = 0;
 
     private List<(Node, Node)> PickupDropoffNodesList;
-    
+
+
+    public static List<Marker> selectedMarkers;
+    public static List<Path> selectedPaths;
+
     // needed for create primitive
     private MeshFilter meshFilter;
     private MeshRenderer meshRenderer;
@@ -117,4 +127,31 @@ public class GameManager : MonoBehaviour
         score = 0;
         scoreText.text = score.ToString();
     }
+
+    public static void AddMarkerToSelection(Marker marker)
+    {
+        if (selectedMarkers == null)
+            selectedMarkers = new List<Marker>();
+
+        if (!selectedMarkers.Contains(marker))
+            selectedMarkers.Add(marker);
+
+        RedrawNumbersOnMarkers();
+
+        
+    }
+
+    public static void RedrawNumbersOnMarkers()
+    {
+        var allMarkers = FindObjectsOfType<Marker>();
+        foreach (var marker in allMarkers)
+            marker.label.text = "";
+
+        for (int i = 0; i < selectedMarkers.Count; i++)
+        {
+            var marker = selectedMarkers[i];
+            marker.label.text = (i + 1).ToString();
+        }
+    }
+
 }

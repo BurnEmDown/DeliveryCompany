@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private TMP_Text scoreText;
 
-    [SerializeField] private Material[] colorMaterials; // 0 is red, 1 is blue, 2 is green
+    [SerializeField] private Color[] colors; // 0 is red, 1 is blue, 2 is green
 
     [SerializeField] private GameObject pickupMarkerPrefab;
     [SerializeField] private GameObject dropoffMarkerPrefab;
@@ -83,27 +83,17 @@ public class GameManager : MonoBehaviour
         int materialIndex = 0;
         foreach (var tuple in PickupDropoffNodesList)
         {
-            GameObject pickupObject = Instantiate(pickupMarkerPrefab, tuple.Item1.transform.position + Vector3.back,
-                Quaternion.identity);
-            pickupObject.GetComponent<SpriteRenderer>().material =
-                colorMaterials[materialIndex];
+            var pickupPosition = tuple.Item1.transform.position + Vector3.back;
+            var dropoffPosition = tuple.Item2.transform.position + Vector3.back;
 
-            GameObject dropoffObject = Instantiate(dropoffMarkerPrefab, tuple.Item2.transform.position + Vector3.back,
-                Quaternion.identity);
-            dropoffObject.GetComponent<SpriteRenderer>().material = colorMaterials[materialIndex];
+            GameObject pickupObject = Instantiate(pickupMarkerPrefab, pickupPosition, Quaternion.identity);
+            GameObject dropoffObject = Instantiate(dropoffMarkerPrefab, dropoffPosition,  Quaternion.identity);
 
-            GameObject foodIcon = Instantiate(foodIconContainer.GetRandomAvailableFoodIcon(), pickupObject.transform);
+            var pickupRenderer = pickupObject.GetComponent<SpriteRenderer>();
+            var dropoffRenderer = dropoffObject.GetComponent<SpriteRenderer>();
 
-            foodIcon.transform.localPosition = Vector3.back;
-            foodIcon.transform.rotation = Quaternion.identity;
-            //some food icons aren't centered: IceCream and Waffle
-
-            GameObject obj2 = Instantiate(dropoffMarkerPrefab, tuple.Item2.transform.position + Vector3.back,
-                Quaternion.identity);
-            obj2.GetComponent<SpriteRenderer>().material =
-                colorMaterials[materialIndex];
-
-            materialIndex++;
+            pickupRenderer.color = colors[materialIndex];
+            dropoffRenderer.color = colors[materialIndex];
 
             var pickupMarker = pickupObject.GetComponent<Marker>();
             var dropoffMarker = dropoffObject.GetComponent<Marker>();
@@ -116,6 +106,14 @@ public class GameManager : MonoBehaviour
 
             pickupMarker.isPickup = true;
             dropoffMarker.isPickup = false;
+
+
+            GameObject foodIcon = Instantiate(foodIconContainer.GetRandomAvailableFoodIcon(), pickupObject.transform);
+            foodIcon.transform.localPosition = Vector3.back;
+            foodIcon.transform.rotation = Quaternion.identity;
+            //some food icons aren't centered: IceCream and Waffle
+
+            materialIndex++;
         }
     }
 

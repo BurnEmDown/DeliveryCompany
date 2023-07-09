@@ -113,19 +113,25 @@ public class GameManager : MonoBehaviour
             pickupMarker.node = tuple.Item1;
             dropoffMarker.node = tuple.Item2;
 
-            pickupMarker.colorIndex = materialIndex;
-            dropoffMarker.colorIndex = materialIndex;
+            //pickupMarker.colorIndex = materialIndex;
+            //dropoffMarker.colorIndex = materialIndex;
 
             pickupMarker.isPickup = true;
             dropoffMarker.isPickup = false;
 
-            GameObject foodIcon = Instantiate(foodIconContainer.GetRandomAvailableFoodIcon(), pickupObject.transform);
-            foodIcon.transform.localPosition = Vector3.back;
+            GameObject foodIcon = foodIconContainer.GetRandomAvailableFoodIcon();
+
+            GameObject foodIconPickup = Instantiate(foodIcon, pickupObject.transform);
+            foodIconPickup.transform.localPosition = Vector3.back;
+            
+            GameObject foodIconDropoff = Instantiate(foodIcon, dropoffObject.transform);
+            foodIconDropoff.transform.localPosition = Vector3.back + (Vector3.up * 0.8f);
+            foodIconDropoff.transform.localScale *= 0.8f;
 
             materialIndex++;
         }
 
-        RedrawAvailabilityColors();
+        //RedrawAvailabilityColors();
     }
 
     private void DisableGoButton()
@@ -188,7 +194,7 @@ public class GameManager : MonoBehaviour
             selectedMarkers.Add(marker);
 
         RedrawNumbersOnMarkers();
-        RedrawAvailabilityColors();
+        //RedrawAvailabilityColors();
 
         CalculateAndAddPathToMarker(marker);
         EnableResetRouteButton();
@@ -266,7 +272,7 @@ public class GameManager : MonoBehaviour
         if(selectedMarkers != null)
             selectedMarkers.Clear();
         RedrawNumbersOnMarkers();
-        RedrawAvailabilityColors();
+        //RedrawAvailabilityColors();
         DisableResetRouteButton();
         DisableGoButton();
     }

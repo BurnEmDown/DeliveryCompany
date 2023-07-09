@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="255b359c-c6b9-46ee-b7bd-aa5a3f6d2693" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/FoodIconContainer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/3D Objects/01_3D/ETC/3D Bakery Object/Prefab/Donuts.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/3D Objects/01_3D/ETC/3D Bakery Object/Prefab/Donuts.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/3D Objects/01_3D/ETC/3D Bakery Object/Prefab/IceCream.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/3D Objects/01_3D/ETC/3D Bakery Object/Prefab/IceCream.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/3D Objects/01_3D/ETC/3D Bakery Object/Prefab/Waffle.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/3D Objects/01_3D/ETC/3D Bakery Object/Prefab/Waffle.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/3D Objects/Icons/Hambuger.FBX" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/3D Objects/Icons/Hambuger.FBX.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/3D Objects/Icons/cake.FBX" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/3D Objects/Icons/cake.FBX.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/3D Objects/Icons/icecream.FBX" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/3D Objects/Icons/icecream.FBX.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/3D Objects/Icons/pizza.FBX" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/3D Objects/Icons/pizza.FBX.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/TownScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/TownScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DropoffSpawner.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DropoffSpawner.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PickupSpawner.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PickupSpawner.cs" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2SJ32vEiiMh0beObRAz96KVIaQM" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="255b359c-c6b9-46ee-b7bd-aa5a3f6d2693" name="Changes" comment="" />
+      <created>1688850660412</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1688850660412</updated>
+      <workItem from="1688850717453" duration="2334000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+</project>

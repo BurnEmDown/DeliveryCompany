@@ -9,6 +9,10 @@ public class Driver : MonoBehaviour
     
     [SerializeField] private float moveSpeed = 0.002f;
 
+    private IEnumerator driveToDestinationNodeEnumerator;
+    private int currentPathIndex;
+    private int currentNodeIndex;
+
     public Node GetCurrentNode()
     {
         return currentNode;
@@ -17,7 +21,7 @@ public class Driver : MonoBehaviour
     private void Start()
     {
         transform.position = currentNode.transform.position;
-        StartCoroutine(DriveToDestinationNodeCoroutine());
+        driveToDestinationNodeEnumerator = CreateDriveToDestinationNodeEnumerator();
     }
 
     public void SetDestinationNode(Node destNode)
@@ -25,21 +29,41 @@ public class Driver : MonoBehaviour
         currentDestinationNode = destNode;
     }
 
-
-    public IEnumerator DriveToDestinationNodeCoroutine()
+    private void Update()
     {
+        driveToDestinationNodeEnumerator.MoveNext();
+    }
 
-        while(transform.position != currentDestinationNode.transform.position) {
- 
-            // move driver towards the destination, never moving farther than "moveSpeed" in one frame.
-            transform.position = Vector2.MoveTowards(transform.position, currentDestinationNode.transform.position, moveSpeed);
- 
-            // wait until next frame to continue
+
+    public IEnumerator _CreateDriveToDestinationNodeEnumerator()
+    {
+        currentPathIndex = 0;
+        currentNodeIndex = 0;
+        while()
+        {
+            var nextNode = currentNodeIndex++;
+            while(transform.position != currentDestinationNode.transform.position)
+            {
+                var destinationPosition = currentDestinationNode.transform.position;
+                transform.position = Vector2.MoveTowards(transform.position, destinationPosition, moveSpeed * Time.deltaTime);
+                yield return null;
+            }
+
+            currentNode = currentDestinationNode;
+            Debug.Log("reached node: " + currentNode.ToString());
             yield return null;
         }
+    }
 
-        currentNode = currentDestinationNode;
-        Debug.Log("reached destination: " + currentNode.ToString());
+
+    public IEnumerator CreateDriveToDestinationNodeEnumerator()
+    {
+
+
+
+
+
         yield return null;
     }
+
 }

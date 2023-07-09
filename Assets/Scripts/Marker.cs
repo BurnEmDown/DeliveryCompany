@@ -19,13 +19,13 @@ public class Marker : MonoBehaviour
             Debug.Log("<color=cyan>Color doesn't exist in previous pickups</color>");
             return;
         }
-        GameManager.AddMarkerToSelection(this);
+        GameManager.Instance.AddMarkerToSelection(this);
     }
 
 
     public bool IsValidDestination()
     {
-        var selectedMarkers = GameManager.selectedMarkers;
+        var selectedMarkers = GameManager.Instance.selectedMarkers;
         var hasColorInPrevPickups = selectedMarkers != null && selectedMarkers.Any(marker => marker.isPickup && marker.colorIndex == this.colorIndex);
         var isValidDestination = isPickup || hasColorInPrevPickups;
 

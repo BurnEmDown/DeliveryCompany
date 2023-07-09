@@ -9,6 +9,8 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
+
     public class Path
     {
         public List<Node> path;
@@ -16,6 +18,7 @@ public class GameManager : MonoBehaviour
     }
 
     [SerializeField] private Button goButton;
+    [SerializeField] private Button resetRouteButton;
     private TMP_Text goButtonText;
     private Image goButtonImage;
     [SerializeField] private PickupSpawner pickupSpawner;
@@ -40,8 +43,8 @@ public class GameManager : MonoBehaviour
     private List<(Node, Node)> PickupDropoffNodesList;
 
 
-    public static List<Marker> selectedMarkers;
-    public static List<Path> selectedPaths;
+    public List<Marker> selectedMarkers;
+    public List<Path> selectedPaths;
 
     // needed for create primitive
     private MeshFilter meshFilter;
@@ -51,6 +54,15 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+        
         PickupDropoffNodesList = new List<(Node, Node)>();
         goButtonText = goButton.GetComponentInChildren<TMP_Text>();
         goButtonImage = goButton.GetComponent<Image>();
@@ -61,6 +73,7 @@ public class GameManager : MonoBehaviour
         DisableGoButton();
         SetTimerText(timerSeconds);
         CreatePickupsAndDropoffs(numPickups);
+        DisableResetRouteButton();
     }
 
     private void CreatePickupsAndDropoffs(int num)
@@ -106,16 +119,13 @@ public class GameManager : MonoBehaviour
             pickupMarker.isPickup = true;
             dropoffMarker.isPickup = false;
 
-
             GameObject foodIcon = Instantiate(foodIconContainer.GetRandomAvailableFoodIcon(), pickupObject.transform);
             foodIcon.transform.localPosition = Vector3.back;
-            foodIcon.transform.rotation = Quaternion.identity;
-            //some food icons aren't centered: IceCream and Waffle
 
             materialIndex++;
         }
 
-        RedrawAvaliabilityColors();
+        RedrawAvailabilityColors();
     }
 
     private void DisableGoButton()
@@ -136,6 +146,16 @@ public class GameManager : MonoBehaviour
         var tempColor = goButtonImage.color;
         tempColor.a = 1f;
         goButtonImage.color = tempColor;
+    }
+
+    private void EnableResetRouteButton()
+    {
+        resetRouteButton.interactable = true;
+    }
+    
+    private void DisableResetRouteButton()
+    {
+        resetRouteButton.interactable = false;
     }
 
     public void SetTimerText(int seconds)
@@ -159,7 +179,7 @@ public class GameManager : MonoBehaviour
         scoreText.text = score.ToString();
     }
 
-    public static void AddMarkerToSelection(Marker marker)
+    public void AddMarkerToSelection(Marker marker)
     {
         if (selectedMarkers == null)
             selectedMarkers = new List<Marker>();
@@ -168,12 +188,18 @@ public class GameManager : MonoBehaviour
             selectedMarkers.Add(marker);
 
         RedrawNumbersOnMarkers();
-        RedrawAvaliabilityColors();
+        RedrawAvailabilityColors();
 
         CalculateAndAddPathToMarker(marker);
+        EnableResetRouteButton();
+
+        if (selectedMarkers.Count == numPickups)
+        {
+            EnableGoButton();
+        }
     }
 
-    public static void RedrawNumbersOnMarkers()
+    public void RedrawNumbersOnMarkers()
     {
         var allMarkers = FindObjectsOfType<Marker>();
         foreach (var marker in allMarkers)
@@ -185,27 +211,25 @@ public class GameManager : MonoBehaviour
             marker.label.text = (i + 1).ToString();
         }
     }
-    public static void RedrawAvaliabilityColors()
+    public void RedrawAvailabilityColors()
     {
-        var gameManager = FindObjectOfType<GameManager>();
-
         var allMarkers = FindObjectsOfType<Marker>();
 
         foreach (var marker in allMarkers)
         {
-            var color = gameManager.colors[marker.colorIndex];
+            var color = colors[marker.colorIndex];
             var isSelected = selectedMarkers != null && selectedMarkers.Contains(marker);
             if (isSelected)
             {
-                var selectedColorStrength = gameManager.disabledButtonColor.a;
-                var opaqueSelectedColor = gameManager.selectedButtonColor;
+                var selectedColorStrength = disabledButtonColor.a;
+                var opaqueSelectedColor = selectedButtonColor;
                 opaqueSelectedColor.a = 1;
                 color = Color.Lerp(color, opaqueSelectedColor, selectedColorStrength);
             }
             if (!marker.IsValidDestination())
             {
-                var disableColorStrength = gameManager.disabledButtonColor.a;
-                var opaqueDisabledColor = gameManager.disabledButtonColor;
+                var disableColorStrength = disabledButtonColor.a;
+                var opaqueDisabledColor = disabledButtonColor;
                 opaqueDisabledColor.a = 1;
                 color = Color.Lerp(color, opaqueDisabledColor, disableColorStrength);
             }
@@ -214,7 +238,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public static void CalculateAndAddPathToMarker(Marker marker)
+    public void CalculateAndAddPathToMarker(Marker marker)
     {
         if (!selectedMarkers.Any(m => m != marker))
             return;
@@ -233,5 +257,17 @@ public class GameManager : MonoBehaviour
             selectedPaths = new List<Path>();
 
         selectedPaths.Add(addedPath);
+    }
+
+    public void ResetRoute()
+    {
+        if(selectedPaths != null)
+            selectedPaths.Clear();
+        if(selectedMarkers != null)
+            selectedMarkers.Clear();
+        RedrawNumbersOnMarkers();
+        RedrawAvailabilityColors();
+        DisableResetRouteButton();
+        DisableGoButton();
     }
 }

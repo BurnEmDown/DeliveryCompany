@@ -168,16 +168,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DropOffPoints:
-  - {fileID: 1738356290}
-  - {fileID: 1168347089}
-  - {fileID: 667714822}
-  - {fileID: 1477018571}
-  - {fileID: 1662661136}
-  - {fileID: 207641261}
-  - {fileID: 998930096}
-  - {fileID: 195715257}
-  - {fileID: 675505707}
-  - {fileID: 1753560745}
+  - {fileID: 1286722738}
+  - {fileID: 2137956823}
+  - {fileID: 1669164743}
+  - {fileID: 661426767}
+  - {fileID: 1743281152}
+  - {fileID: 2114818409}
+  - {fileID: 147132693}
+  - {fileID: 1014952291}
+  - {fileID: 1047211719}
+  - {fileID: 1242578006}
 --- !u!1 &28783523
 GameObject:
   m_ObjectHideFlags: 0
@@ -304,16 +304,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PickupPoints:
-  - {fileID: 1752428818}
-  - {fileID: 661426767}
-  - {fileID: 2092094086}
-  - {fileID: 68292424}
-  - {fileID: 1670037408}
-  - {fileID: 459780442}
-  - {fileID: 1014952291}
-  - {fileID: 1669164743}
-  - {fileID: 147132693}
-  - {fileID: 101990351}
+  - {fileID: 1477018571}
+  - {fileID: 207641261}
+  - {fileID: 152663173}
+  - {fileID: 356901527}
+  - {fileID: 898518423}
+  - {fileID: 1234347164}
+  - {fileID: 1087421317}
+  - {fileID: 31180929}
+  - {fileID: 1845137910}
+  - {fileID: 830562320}
 --- !u!4 &31229154
 Transform:
   m_ObjectHideFlags: 0

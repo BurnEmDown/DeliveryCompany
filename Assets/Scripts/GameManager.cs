@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DefaultNamespace;
 using TMPro;
 using UnityEngine;
@@ -75,15 +76,21 @@ public class GameManager : MonoBehaviour
         int materialIndex = 0;
         foreach (var tuple in PickupDropoffNodesList)
         {
-            GameObject obj1 = Instantiate(pickupMarkerPrefab, tuple.Item1.transform.position + Vector3.back, Quaternion.identity);
-            obj1.GetComponent<SpriteRenderer>().material =
+            GameObject pickupObject = Instantiate(pickupMarkerPrefab, tuple.Item1.transform.position + Vector3.back, Quaternion.identity);
+            pickupObject.GetComponent<SpriteRenderer>().material =
                 colorMaterials[materialIndex];
-
-            GameObject obj2 = Instantiate(dropoffMarkerPrefab, tuple.Item2.transform.position + Vector3.back, Quaternion.identity);
-            obj2.GetComponent<SpriteRenderer>().material =
+            
+            GameObject dropoffObject = Instantiate(dropoffMarkerPrefab, tuple.Item2.transform.position + Vector3.back, Quaternion.identity);
+            dropoffObject.GetComponent<SpriteRenderer>().material =
                 colorMaterials[materialIndex];
             
             materialIndex++;
+
+            var pickupMarker = pickupObject.GetComponent<Marker>();
+            var dropoffMarker = dropoffObject.GetComponent<Marker>();
+
+            pickupMarker.node = tuple.Item1;
+            dropoffMarker.node = tuple.Item2;
         }
     }
 
@@ -138,7 +145,7 @@ public class GameManager : MonoBehaviour
 
         RedrawNumbersOnMarkers();
 
-        
+        CalculateAndAddPathToMarker(marker);
     }
 
     public static void RedrawNumbersOnMarkers()
@@ -154,4 +161,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public static void CalculateAndAddPathToMarker(Marker marker)
+    {
+        if (!selectedMarkers.Any())
+            return;
+
+        var sourceNode = selectedMarkers.Last().node;
+        var destinationNode = marker.node;
+
+        var addedPathNodes = Node.FindPath(sourceNode, destinationNode);
+        var addedPath = new Path()
+        {
+            destination = marker,
+            path = addedPathNodes
+        };
+
+        selectedPaths.Add(addedPath);
+    }
 }

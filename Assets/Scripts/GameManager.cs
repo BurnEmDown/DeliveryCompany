@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DefaultNamespace;
 using TMPro;
 using UnityEngine;
@@ -8,6 +9,12 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public class Path
+    {
+        public List<Node> path;
+        public Marker destination;
+    }
+
     [SerializeField] private Button goButton;
     private TMP_Text goButtonText;
     private Image goButtonImage;
@@ -29,7 +36,11 @@ public class GameManager : MonoBehaviour
     private int score = 0;
 
     private List<(Node, Node)> PickupDropoffNodesList;
-    
+
+
+    public static List<Marker> selectedMarkers;
+    public static List<Path> selectedPaths;
+
     // needed for create primitive
     private MeshFilter meshFilter;
     private MeshRenderer meshRenderer;
@@ -66,9 +77,12 @@ public class GameManager : MonoBehaviour
         int materialIndex = 0;
         foreach (var tuple in PickupDropoffNodesList)
         {
-            GameObject obj1 = Instantiate(pickupMarkerPrefab, tuple.Item1.transform.position + Vector3.back, Quaternion.identity);
-            obj1.GetComponent<SpriteRenderer>().material =
+            GameObject pickupObject = Instantiate(pickupMarkerPrefab, tuple.Item1.transform.position + Vector3.back, Quaternion.identity);
+            pickupObject.GetComponent<SpriteRenderer>().material =
                 colorMaterials[materialIndex];
+            
+            GameObject dropoffObject = Instantiate(dropoffMarkerPrefab, tuple.Item2.transform.position + Vector3.back, Quaternion.identity);
+            dropoffObject.GetComponent<SpriteRenderer>().material = colorMaterials[materialIndex];
 
             GameObject foodIcon = Instantiate(foodIconContainer.GetRandomAvailableFoodIcon(), obj1.transform);
             
@@ -81,6 +95,12 @@ public class GameManager : MonoBehaviour
                 colorMaterials[materialIndex];
             
             materialIndex++;
+
+            var pickupMarker = pickupObject.GetComponent<Marker>();
+            var dropoffMarker = dropoffObject.GetComponent<Marker>();
+
+            pickupMarker.node = tuple.Item1;
+            dropoffMarker.node = tuple.Item2;
         }
     }
 
@@ -123,5 +143,49 @@ public class GameManager : MonoBehaviour
     {
         score = 0;
         scoreText.text = score.ToString();
+    }
+
+    public static void AddMarkerToSelection(Marker marker)
+    {
+        if (selectedMarkers == null)
+            selectedMarkers = new List<Marker>();
+
+        if (!selectedMarkers.Contains(marker))
+            selectedMarkers.Add(marker);
+
+        RedrawNumbersOnMarkers();
+
+        CalculateAndAddPathToMarker(marker);
+    }
+
+    public static void RedrawNumbersOnMarkers()
+    {
+        var allMarkers = FindObjectsOfType<Marker>();
+        foreach (var marker in allMarkers)
+            marker.label.text = "";
+
+        for (int i = 0; i < selectedMarkers.Count; i++)
+        {
+            var marker = selectedMarkers[i];
+            marker.label.text = (i + 1).ToString();
+        }
+    }
+
+    public static void CalculateAndAddPathToMarker(Marker marker)
+    {
+        if (!selectedMarkers.Any())
+            return;
+
+        var sourceNode = selectedMarkers.Last().node;
+        var destinationNode = marker.node;
+
+        var addedPathNodes = Node.FindPath(sourceNode, destinationNode);
+        var addedPath = new Path()
+        {
+            destination = marker,
+            path = addedPathNodes
+        };
+
+        selectedPaths.Add(addedPath);
     }
 }

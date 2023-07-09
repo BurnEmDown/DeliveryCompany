@@ -95,8 +95,6 @@ public class GameManager : MonoBehaviour
             GameObject foodIcon = Instantiate(foodIconContainer.GetRandomAvailableFoodIcon(), pickupObject.transform);
 
             foodIcon.transform.localPosition = Vector3.back;
-            foodIcon.transform.rotation = Quaternion.identity;
-            //some food icons aren't centered: IceCream and Waffle
 
             GameObject obj2 = Instantiate(dropoffMarkerPrefab, tuple.Item2.transform.position + Vector3.back,
                 Quaternion.identity);

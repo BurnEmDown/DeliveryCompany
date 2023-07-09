@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     private Image goButtonImage;
     [SerializeField] private PickupSpawner pickupSpawner;
     [SerializeField] private DropoffSpawner dropoffSpawner;
+    [SerializeField] private FoodIconContainer foodIconContainer;
 
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private TMP_Text scoreText;
@@ -81,7 +82,16 @@ public class GameManager : MonoBehaviour
                 colorMaterials[materialIndex];
             
             GameObject dropoffObject = Instantiate(dropoffMarkerPrefab, tuple.Item2.transform.position + Vector3.back, Quaternion.identity);
-            dropoffObject.GetComponent<SpriteRenderer>().material =
+            dropoffObject.GetComponent<SpriteRenderer>().material = colorMaterials[materialIndex];
+
+            GameObject foodIcon = Instantiate(foodIconContainer.GetRandomAvailableFoodIcon(), pickupObject.transform);
+            
+            foodIcon.transform.localPosition = Vector3.back;
+            foodIcon.transform.rotation = Quaternion.identity;
+            //some food icons aren't centered: IceCream and Waffle
+
+            GameObject obj2 = Instantiate(dropoffMarkerPrefab, tuple.Item2.transform.position + Vector3.back, Quaternion.identity);
+            obj2.GetComponent<SpriteRenderer>().material =
                 colorMaterials[materialIndex];
             
             materialIndex++;
@@ -102,7 +112,7 @@ public class GameManager : MonoBehaviour
 
     private void DisableGoButton()
     {
-        goButtonText.text = "Set complete delivery course";
+        goButtonText.text = "Set delivery course";
         goButtonText.fontSize = 18;
         goButton.interactable = false;
         var tempColor = goButtonImage.color;

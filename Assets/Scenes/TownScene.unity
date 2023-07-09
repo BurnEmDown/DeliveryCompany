@@ -172,12 +172,11 @@ MonoBehaviour:
   - {fileID: 2137956823}
   - {fileID: 1669164743}
   - {fileID: 661426767}
-  - {fileID: 1743281152}
-  - {fileID: 2114818409}
   - {fileID: 147132693}
   - {fileID: 1014952291}
   - {fileID: 1047211719}
   - {fileID: 1242578006}
+  - {fileID: 68292424}
 --- !u!1 &28783523
 GameObject:
   m_ObjectHideFlags: 0

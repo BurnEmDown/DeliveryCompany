@@ -75,6 +75,12 @@ public class Driver : MonoBehaviour
             }
 
             pathIndex++;
+            var isDropoff = !path.destination.isPickup;
+            if (isDropoff)
+            {
+                GameManager.Instance.CreatePickupsAndDropoffs(1);
+            }
+            path.destination.gameObject.SetActive(false);
             yield return null;
         }
 

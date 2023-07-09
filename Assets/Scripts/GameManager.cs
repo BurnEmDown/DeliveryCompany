@@ -58,42 +58,51 @@ public class GameManager : MonoBehaviour
     {
         DisableGoButton();
         SetTimerText(timerSeconds);
-        List<Node> pickups = pickupSpawner.SpawnCurrentPickupPoints(numPickups);
-        List<Node> dropoffs = dropoffSpawner.SpawnCurrentDropOffPoints(numPickups);
+        CreatePickupsAndDropoffs(numPickups);
+    }
+
+    private void CreatePickupsAndDropoffs(int num)
+    {
+        List<Node> pickups = pickupSpawner.SpawnCurrentPickupPoints(num);
+        List<Node> dropoffs = dropoffSpawner.SpawnCurrentDropOffPoints(num);
         foreach (var node in pickups)
         {
             Debug.Log("pickup point: " + node.ToString());
         }
+
         foreach (var node in dropoffs)
         {
             Debug.Log("dropoff point: " + node.ToString());
         }
 
-        for (int i = 0; i < numPickups; i++)
+        for (int i = 0; i < num; i++)
         {
-            PickupDropoffNodesList.Add((pickups[i],dropoffs[i]));
+            PickupDropoffNodesList.Add((pickups[i], dropoffs[i]));
         }
 
         int materialIndex = 0;
         foreach (var tuple in PickupDropoffNodesList)
         {
-            GameObject pickupObject = Instantiate(pickupMarkerPrefab, tuple.Item1.transform.position + Vector3.back, Quaternion.identity);
+            GameObject pickupObject = Instantiate(pickupMarkerPrefab, tuple.Item1.transform.position + Vector3.back,
+                Quaternion.identity);
             pickupObject.GetComponent<SpriteRenderer>().material =
                 colorMaterials[materialIndex];
-            
-            GameObject dropoffObject = Instantiate(dropoffMarkerPrefab, tuple.Item2.transform.position + Vector3.back, Quaternion.identity);
+
+            GameObject dropoffObject = Instantiate(dropoffMarkerPrefab, tuple.Item2.transform.position + Vector3.back,
+                Quaternion.identity);
             dropoffObject.GetComponent<SpriteRenderer>().material = colorMaterials[materialIndex];
 
             GameObject foodIcon = Instantiate(foodIconContainer.GetRandomAvailableFoodIcon(), pickupObject.transform);
-            
+
             foodIcon.transform.localPosition = Vector3.back;
             foodIcon.transform.rotation = Quaternion.identity;
             //some food icons aren't centered: IceCream and Waffle
 
-            GameObject obj2 = Instantiate(dropoffMarkerPrefab, tuple.Item2.transform.position + Vector3.back, Quaternion.identity);
+            GameObject obj2 = Instantiate(dropoffMarkerPrefab, tuple.Item2.transform.position + Vector3.back,
+                Quaternion.identity);
             obj2.GetComponent<SpriteRenderer>().material =
                 colorMaterials[materialIndex];
-            
+
             materialIndex++;
 
             var pickupMarker = pickupObject.GetComponent<Marker>();

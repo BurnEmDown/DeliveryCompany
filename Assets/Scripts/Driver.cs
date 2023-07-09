@@ -9,9 +9,9 @@ public class Driver : MonoBehaviour
     
     [SerializeField] private float moveSpeed = 0.002f;
 
+    public bool isMoving = false;
+
     private IEnumerator driveToDestinationNodeEnumerator;
-    private int currentPathIndex;
-    private int currentNodeIndex;
 
     public Node GetCurrentNode()
     {
@@ -31,38 +31,47 @@ public class Driver : MonoBehaviour
 
     private void Update()
     {
-        driveToDestinationNodeEnumerator.MoveNext();
+        if (isMoving)
+            driveToDestinationNodeEnumerator.MoveNext();
     }
 
-
-    public IEnumerator _CreateDriveToDestinationNodeEnumerator()
+    public void StartMoving()
     {
-        currentPathIndex = 0;
-        currentNodeIndex = 0;
-        while()
-        {
-            var nextNode = currentNodeIndex++;
-            while(transform.position != currentDestinationNode.transform.position)
-            {
-                var destinationPosition = currentDestinationNode.transform.position;
-                transform.position = Vector2.MoveTowards(transform.position, destinationPosition, moveSpeed * Time.deltaTime);
-                yield return null;
-            }
-
-            currentNode = currentDestinationNode;
-            Debug.Log("reached node: " + currentNode.ToString());
-            yield return null;
-        }
+        isMoving = true;
     }
 
 
     public IEnumerator CreateDriveToDestinationNodeEnumerator()
     {
+        var paths = GameManager.Instance.selectedPaths;
+        var pathIndex = 0;
 
+        while (pathIndex < paths.Count)
+        {
+            var path = paths[pathIndex];
+            var nodes = path.path;
+            var nodeIndex = 0;
 
+            while (nodeIndex < nodes.Count)
+            {
+                var node = nodes[nodeIndex];
+                var destination = node.transform.position;
 
+                while (transform.position != destination)
+                {
+                    transform.position = Vector2.MoveTowards(transform.position, destination, moveSpeed * Time.deltaTime);
+                    yield return null;
+                }
 
+                nodeIndex++;
+                yield return null;
+            }
 
+            pathIndex++;
+            yield return null;
+        }
+
+        isMoving = false;
         yield return null;
     }
 

@@ -9,7 +9,7 @@ public class Marker : MonoBehaviour
 {
     public TextMeshPro label;
     public Node node;
-    public int colorIndex;
+    public int matchIndex;
     public bool isPickup;
 
     private void OnMouseDown()
@@ -26,7 +26,7 @@ public class Marker : MonoBehaviour
     public bool IsValidDestination()
     {
         var selectedMarkers = GameManager.Instance.selectedMarkers;
-        var hasColorInPrevPickups = selectedMarkers != null && selectedMarkers.Any(marker => marker.isPickup && marker.colorIndex == this.colorIndex);
+        var hasColorInPrevPickups = selectedMarkers != null && selectedMarkers.Any(marker => marker.isPickup && marker.matchIndex == this.matchIndex);
         var isValidDestination = isPickup || hasColorInPrevPickups;
 
         return isValidDestination;

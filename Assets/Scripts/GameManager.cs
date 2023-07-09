@@ -40,9 +40,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int timerSeconds = 72;
     private int score = 0;
 
-    private List<(Node, Node)> PickupDropoffNodesList;
-
-
     public List<Marker> selectedMarkers;
     public List<Path> selectedPaths;
 
@@ -63,7 +60,6 @@ public class GameManager : MonoBehaviour
             Destroy(this);
         }
         
-        PickupDropoffNodesList = new List<(Node, Node)>();
         goButtonText = goButton.GetComponentInChildren<TMP_Text>();
         goButtonImage = goButton.GetComponent<Image>();
     }
@@ -76,8 +72,10 @@ public class GameManager : MonoBehaviour
         DisableResetRouteButton();
     }
 
-    private void CreatePickupsAndDropoffs(int num)
+    int currentMatchIndex = 0;
+    public void CreatePickupsAndDropoffs(int num)
     {
+        var pickupDropoffNodesList = new List<(Node, Node)>();
         List<Node> pickups = pickupSpawner.SpawnCurrentPickupPoints(num);
         List<Node> dropoffs = dropoffSpawner.SpawnCurrentDropOffPoints(num);
         foreach (var node in pickups)
@@ -92,20 +90,16 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < num; i++)
         {
-            PickupDropoffNodesList.Add((pickups[i], dropoffs[i]));
+            pickupDropoffNodesList.Add((pickups[i], dropoffs[i]));
         }
 
-        int materialIndex = 0;
-        foreach (var tuple in PickupDropoffNodesList)
+        foreach (var tuple in pickupDropoffNodesList)
         {
             var pickupPosition = tuple.Item1.transform.position + Vector3.back;
             var dropoffPosition = tuple.Item2.transform.position + Vector3.back;
 
             GameObject pickupObject = Instantiate(pickupMarkerPrefab, pickupPosition, Quaternion.identity);
-            GameObject dropoffObject = Instantiate(dropoffMarkerPrefab, dropoffPosition,  Quaternion.identity);
-
-            var pickupRenderer = pickupObject.GetComponent<SpriteRenderer>();
-            var dropoffRenderer = dropoffObject.GetComponent<SpriteRenderer>();
+            GameObject dropoffObject = Instantiate(dropoffMarkerPrefab, dropoffPosition, Quaternion.identity);
 
             var pickupMarker = pickupObject.GetComponent<Marker>();
             var dropoffMarker = dropoffObject.GetComponent<Marker>();
@@ -113,8 +107,8 @@ public class GameManager : MonoBehaviour
             pickupMarker.node = tuple.Item1;
             dropoffMarker.node = tuple.Item2;
 
-            //pickupMarker.colorIndex = materialIndex;
-            //dropoffMarker.colorIndex = materialIndex;
+            pickupMarker.matchIndex = currentMatchIndex;
+            dropoffMarker.matchIndex = currentMatchIndex;
 
             pickupMarker.isPickup = true;
             dropoffMarker.isPickup = false;
@@ -123,12 +117,12 @@ public class GameManager : MonoBehaviour
 
             GameObject foodIconPickup = Instantiate(foodIcon, pickupObject.transform);
             foodIconPickup.transform.localPosition = Vector3.back;
-            
+
             GameObject foodIconDropoff = Instantiate(foodIcon, dropoffObject.transform);
             foodIconDropoff.transform.localPosition = Vector3.back + (Vector3.up * 0.8f);
             foodIconDropoff.transform.localScale *= 0.8f;
 
-            materialIndex++;
+            currentMatchIndex++;
         }
 
         //RedrawAvailabilityColors();
@@ -170,7 +164,7 @@ public class GameManager : MonoBehaviour
         int onlySeconds = seconds - (minutes * 60);
         string extraZero = onlySeconds < 10 ? "0" : "";
         
-        timerText.text = $"{minutes}" + ":" + extraZero + $"{onlySeconds}";
+        timerText.text = minutes + ":" + extraZero + onlySeconds;
     }
 
     public void AddScore(int addScore)
@@ -223,7 +217,7 @@ public class GameManager : MonoBehaviour
 
         foreach (var marker in allMarkers)
         {
-            var color = colors[marker.colorIndex];
+            var color = colors[marker.matchIndex];
             var isSelected = selectedMarkers != null && selectedMarkers.Contains(marker);
             if (isSelected)
             {

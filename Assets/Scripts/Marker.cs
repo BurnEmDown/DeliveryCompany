@@ -14,11 +14,7 @@ public class Marker : MonoBehaviour
 
     private void OnMouseDown()
     {
-        var selectedMarkers = GameManager.selectedMarkers;
-        var hasColorInPrevPickups = selectedMarkers != null && selectedMarkers.Any(marker => marker.isPickup && marker.colorIndex == this.colorIndex);
-        var isValidDestination = isPickup || hasColorInPrevPickups;
-
-        if (!isValidDestination)
+        if (!IsValidDestination())
         {
             Debug.Log("<color=cyan>Color doesn't exist in previous pickups</color>");
             return;
@@ -26,4 +22,13 @@ public class Marker : MonoBehaviour
         GameManager.Instance.AddMarkerToSelection(this);
     }
 
+
+    public bool IsValidDestination()
+    {
+        var selectedMarkers = GameManager.selectedMarkers;
+        var hasColorInPrevPickups = selectedMarkers != null && selectedMarkers.Any(marker => marker.isPickup && marker.colorIndex == this.colorIndex);
+        var isValidDestination = isPickup || hasColorInPrevPickups;
+
+        return isValidDestination;
+    }
 }

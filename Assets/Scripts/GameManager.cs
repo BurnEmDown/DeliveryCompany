@@ -28,7 +28,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private TMP_Text scoreText;
 
-    [SerializeField] private Material[] colorMaterials; // 0 is red, 1 is blue, 2 is green
+    [SerializeField] private Color[] colors; // 0 is red, 1 is blue, 2 is green
+    public Color disabledButtonColor;
+    public Color selectedButtonColor;
 
     [SerializeField] private GameObject pickupMarkerPrefab;
     [SerializeField] private GameObject dropoffMarkerPrefab;
@@ -96,25 +98,14 @@ public class GameManager : MonoBehaviour
         int materialIndex = 0;
         foreach (var tuple in PickupDropoffNodesList)
         {
-            GameObject pickupObject = Instantiate(pickupMarkerPrefab, tuple.Item1.transform.position + Vector3.back,
-                Quaternion.identity);
-            pickupObject.GetComponent<SpriteRenderer>().material =
-                colorMaterials[materialIndex];
+            var pickupPosition = tuple.Item1.transform.position + Vector3.back;
+            var dropoffPosition = tuple.Item2.transform.position + Vector3.back;
 
-            GameObject dropoffObject = Instantiate(dropoffMarkerPrefab, tuple.Item2.transform.position + Vector3.back,
-                Quaternion.identity);
-            dropoffObject.GetComponent<SpriteRenderer>().material = colorMaterials[materialIndex];
+            GameObject pickupObject = Instantiate(pickupMarkerPrefab, pickupPosition, Quaternion.identity);
+            GameObject dropoffObject = Instantiate(dropoffMarkerPrefab, dropoffPosition,  Quaternion.identity);
 
-            GameObject foodIcon = Instantiate(foodIconContainer.GetRandomAvailableFoodIcon(), pickupObject.transform);
-
-            foodIcon.transform.localPosition = Vector3.back;
-
-            GameObject obj2 = Instantiate(dropoffMarkerPrefab, tuple.Item2.transform.position + Vector3.back,
-                Quaternion.identity);
-            obj2.GetComponent<SpriteRenderer>().material =
-                colorMaterials[materialIndex];
-
-            materialIndex++;
+            var pickupRenderer = pickupObject.GetComponent<SpriteRenderer>();
+            var dropoffRenderer = dropoffObject.GetComponent<SpriteRenderer>();
 
             var pickupMarker = pickupObject.GetComponent<Marker>();
             var dropoffMarker = dropoffObject.GetComponent<Marker>();
@@ -127,7 +118,16 @@ public class GameManager : MonoBehaviour
 
             pickupMarker.isPickup = true;
             dropoffMarker.isPickup = false;
+
+
+            GameObject foodIcon = Instantiate(foodIconContainer.GetRandomAvailableFoodIcon(), pickupObject.transform);
+            foodIcon.transform.localPosition = Vector3.back;
+            foodIcon.transform.rotation = Quaternion.identity;
+            
+            materialIndex++;
         }
+
+        RedrawAvaliabilityColors();
     }
 
     private void DisableGoButton()
@@ -190,6 +190,7 @@ public class GameManager : MonoBehaviour
             selectedMarkers.Add(marker);
 
         RedrawNumbersOnMarkers();
+        RedrawAvaliabilityColors();
 
         CalculateAndAddPathToMarker(marker);
         EnableResetRouteButton();
@@ -210,6 +211,34 @@ public class GameManager : MonoBehaviour
         {
             var marker = selectedMarkers[i];
             marker.label.text = (i + 1).ToString();
+        }
+    }
+    public static void RedrawAvaliabilityColors()
+    {
+        var gameManager = FindObjectOfType<GameManager>();
+
+        var allMarkers = FindObjectsOfType<Marker>();
+
+        foreach (var marker in allMarkers)
+        {
+            var color = gameManager.colors[marker.colorIndex];
+            var isSelected = selectedMarkers != null && selectedMarkers.Contains(marker);
+            if (isSelected)
+            {
+                var selectedColorStrength = gameManager.disabledButtonColor.a;
+                var opaqueSelectedColor = gameManager.selectedButtonColor;
+                opaqueSelectedColor.a = 1;
+                color = Color.Lerp(color, opaqueSelectedColor, selectedColorStrength);
+            }
+            if (!marker.IsValidDestination())
+            {
+                var disableColorStrength = gameManager.disabledButtonColor.a;
+                var opaqueDisabledColor = gameManager.disabledButtonColor;
+                opaqueDisabledColor.a = 1;
+                color = Color.Lerp(color, opaqueDisabledColor, disableColorStrength);
+            }
+
+            marker.GetComponent<SpriteRenderer>().color = color;
         }
     }
 

@@ -10,6 +10,13 @@ namespace DefaultNamespace
         private List<GameObject> availableFoodIconList;
         private List<GameObject> recentlyChosenFoodIconList;
 
+        private void Start()
+        {
+            availableFoodIconList = new List<GameObject>();
+            recentlyChosenFoodIconList = new List<GameObject>();
+            availableFoodIconList.AddRange(foodIconList);
+        }
+
         public GameObject GetRandomAvailableFoodIcon()
         {
             int index = Random.Range(0, availableFoodIconList.Count);

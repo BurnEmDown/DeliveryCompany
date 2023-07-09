@@ -23,7 +23,7 @@ public class Marker : MonoBehaviour
             Debug.Log("<color=cyan>Color doesn't exist in previous pickups</color>");
             return;
         }
-        GameManager.AddMarkerToSelection(this);
+        GameManager.Instance.AddMarkerToSelection(this);
     }
 
 }

@@ -9,6 +9,8 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
+
     public class Path
     {
         public List<Node> path;
@@ -16,6 +18,7 @@ public class GameManager : MonoBehaviour
     }
 
     [SerializeField] private Button goButton;
+    [SerializeField] private Button resetRouteButton;
     private TMP_Text goButtonText;
     private Image goButtonImage;
     [SerializeField] private PickupSpawner pickupSpawner;
@@ -49,6 +52,15 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+        
         PickupDropoffNodesList = new List<(Node, Node)>();
         goButtonText = goButton.GetComponentInChildren<TMP_Text>();
         goButtonImage = goButton.GetComponent<Image>();
@@ -59,6 +71,7 @@ public class GameManager : MonoBehaviour
         DisableGoButton();
         SetTimerText(timerSeconds);
         CreatePickupsAndDropoffs(numPickups);
+        DisableResetRouteButton();
     }
 
     private void CreatePickupsAndDropoffs(int num)
@@ -137,6 +150,16 @@ public class GameManager : MonoBehaviour
         goButtonImage.color = tempColor;
     }
 
+    private void EnableResetRouteButton()
+    {
+        resetRouteButton.interactable = true;
+    }
+    
+    private void DisableResetRouteButton()
+    {
+        resetRouteButton.interactable = false;
+    }
+
     public void SetTimerText(int seconds)
     {
         int minutes = seconds / 60;
@@ -158,7 +181,7 @@ public class GameManager : MonoBehaviour
         scoreText.text = score.ToString();
     }
 
-    public static void AddMarkerToSelection(Marker marker)
+    public void AddMarkerToSelection(Marker marker)
     {
         if (selectedMarkers == null)
             selectedMarkers = new List<Marker>();
@@ -169,9 +192,15 @@ public class GameManager : MonoBehaviour
         RedrawNumbersOnMarkers();
 
         CalculateAndAddPathToMarker(marker);
+        EnableResetRouteButton();
+
+        if (selectedMarkers.Count == numPickups)
+        {
+            EnableGoButton();
+        }
     }
 
-    public static void RedrawNumbersOnMarkers()
+    public void RedrawNumbersOnMarkers()
     {
         var allMarkers = FindObjectsOfType<Marker>();
         foreach (var marker in allMarkers)
@@ -184,7 +213,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public static void CalculateAndAddPathToMarker(Marker marker)
+    public void CalculateAndAddPathToMarker(Marker marker)
     {
         if (!selectedMarkers.Any(m => m != marker))
             return;
@@ -203,5 +232,14 @@ public class GameManager : MonoBehaviour
             selectedPaths = new List<Path>();
 
         selectedPaths.Add(addedPath);
+    }
+
+    public void ResetRoute()
+    {
+        selectedMarkers.Clear();
+        selectedPaths.Clear();
+        RedrawNumbersOnMarkers();
+        DisableResetRouteButton();
+        DisableGoButton();
     }
 }

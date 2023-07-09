@@ -9,6 +9,10 @@ public class Driver : MonoBehaviour
     
     [SerializeField] private float moveSpeed = 0.002f;
 
+    public bool isMoving = false;
+
+    private IEnumerator driveToDestinationNodeEnumerator;
+
     public Node GetCurrentNode()
     {
         return currentNode;
@@ -17,7 +21,7 @@ public class Driver : MonoBehaviour
     private void Start()
     {
         transform.position = currentNode.transform.position;
-        StartCoroutine(DriveToDestinationNodeCoroutine());
+        driveToDestinationNodeEnumerator = CreateDriveToDestinationNodeEnumerator();
     }
 
     public void SetDestinationNode(Node destNode)
@@ -25,21 +29,50 @@ public class Driver : MonoBehaviour
         currentDestinationNode = destNode;
     }
 
-
-    public IEnumerator DriveToDestinationNodeCoroutine()
+    private void Update()
     {
+        if (isMoving)
+            driveToDestinationNodeEnumerator.MoveNext();
+    }
 
-        while(transform.position != currentDestinationNode.transform.position) {
- 
-            // move driver towards the destination, never moving farther than "moveSpeed" in one frame.
-            transform.position = Vector2.MoveTowards(transform.position, currentDestinationNode.transform.position, moveSpeed);
- 
-            // wait until next frame to continue
+    public void StartMoving()
+    {
+        isMoving = true;
+    }
+
+
+    public IEnumerator CreateDriveToDestinationNodeEnumerator()
+    {
+        var paths = GameManager.Instance.selectedPaths;
+        var pathIndex = 0;
+
+        while (pathIndex < paths.Count)
+        {
+            var path = paths[pathIndex];
+            var nodes = path.path;
+            var nodeIndex = 0;
+
+            while (nodeIndex < nodes.Count)
+            {
+                var node = nodes[nodeIndex];
+                var destination = node.transform.position;
+
+                while (transform.position != destination)
+                {
+                    transform.position = Vector2.MoveTowards(transform.position, destination, moveSpeed * Time.deltaTime);
+                    yield return null;
+                }
+
+                nodeIndex++;
+                yield return null;
+            }
+
+            pathIndex++;
             yield return null;
         }
 
-        currentNode = currentDestinationNode;
-        Debug.Log("reached destination: " + currentNode.ToString());
+        isMoving = false;
         yield return null;
     }
+
 }

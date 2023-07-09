@@ -116,7 +116,7 @@ public class GameManager : MonoBehaviour
             GameObject foodIcon = foodIconContainer.GetRandomAvailableFoodIcon();
 
             GameObject foodIconPickup = Instantiate(foodIcon, pickupObject.transform);
-            foodIconPickup.transform.localPosition = Vector3.back + Vector3.up;
+            foodIconPickup.transform.localPosition = Vector3.back + (Vector3.up * 0.9f);
             foodIconPickup.transform.localScale *= 3f;
             
             GameObject foodIconDropoff = Instantiate(foodIcon, dropoffObject.transform);

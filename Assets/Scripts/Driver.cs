@@ -57,6 +57,13 @@ public class Driver : MonoBehaviour
                 var node = nodes[nodeIndex];
                 var destination = node.transform.position;
 
+                if (destination.x > transform.position.x)
+                    transform.localRotation = new Quaternion(0, 180, 0, 0);
+                else
+                {
+                    transform.localRotation = new Quaternion(0, 0, 0, 0);
+                }
+
                 while (transform.position != destination)
                 {
                     transform.position = Vector2.MoveTowards(transform.position, destination, moveSpeed * Time.deltaTime);
